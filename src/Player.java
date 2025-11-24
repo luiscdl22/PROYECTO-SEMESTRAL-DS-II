@@ -16,6 +16,17 @@ public class Player {
 
 
     public Player(String name, String symbol, int initialWalls, Point startPos, int targetRow) {
+        //Luis estuvo Aqui >:(
+        // Validaciones básicas de parámetros
+        if (startPos == null){
+            throw new IllegalArgumentException("ERROR: La posicion inicial no puede ser null");
+        }
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("ERROR: El nombre del jugador no puede estar vacío");
+        }
+        if (symbol == null || symbol.trim().isEmpty()) {
+            throw new IllegalArgumentException("ERROR: El símbolo del jugador no puede estar vacío");
+        }
         this.name = name;
         this.symbol = symbol;
         this.wallsRemaining = initialWalls;

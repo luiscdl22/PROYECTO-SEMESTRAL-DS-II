@@ -41,8 +41,16 @@ public class QuoridorGame {
 
         for (int i = 0; i < count; i++) {
             System.out.print("Ingrese nombre para Jugador " + (i + 1) + " (símbolo " + symbols[i] + "): ");
+
+            //Luis estuvo Aqui >:(
             String name = inputScanner.nextLine();
-            if (name == null || name.trim().isEmpty()) name = "Jugador " + (i + 1);
+
+            //Si el nomre esta vacio usar el nombre por defecto
+            if (name == null || name.trim().isEmpty()) {
+                name = "Jugador " + (i + 1);
+                System.out.println("Nombre por defecto: " + name);
+            }
+
             Point p = startPositions[i];
             Player player = new Player(name, symbols[i], initialWalls, new Point(p.x, p.y), targetRows[i]);
             players.add(player);
@@ -133,7 +141,14 @@ public class QuoridorGame {
 
         if (isValidMove(current, next, dir)) {
             player.setCurrentPosition(next);
-            return true;
+
+
+            //Luis estuvo aqui >:(
+            //feedback textual: mostrar las posiciones de los jugadores
+            int visualCol = (next.x /2) + 1;
+            int visualRow = (next.y/2) +1;
+            System.out.println("Jugador " + player.getName() + " esta en: (" + visualCol + "," + visualRow + ")"  );
+            return  true;
         }
         return false;
     }

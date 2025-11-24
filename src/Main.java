@@ -74,22 +74,36 @@ public class Main {
         System.out.println(spaces + "Escribe 'EXIT' para salir en cualquier momento.");
         System.out.println(spaces + "\nPresiona ENTER para empezar...");
 
-        System.in.read();
-        while (System.in.available() > 0) {
+        //Luis estuvo Aqui >:(
+        // Leer ENTER del usuario y limpiar buffer de entrada
+        try {
             System.in.read();
+            while (System.in.available() > 0) {
+                System.in.read();
+            }
+        } catch (IOException e) {
+            // Si falla la lectura continuar con el juego
+            System.err.println("Advertencia: No se pudo leer la entrada correctamente.");
         }
+
     }
 
     private static int askPlayerCount() {
         int count = 0;
         while (count < 2 || count > 4) {
             System.out.print("¿Cuántos jugadores (2-4)? ");
+
+            //Luis estuvo Aqui >:(
+            // Validar que la entrada sea un número válido
             if (SCANNER.hasNextInt()) {
                 count = SCANNER.nextInt();
+                SCANNER.nextLine(); // Consumir salto de línea
             } else {
-                System.out.println("Entrada inválida. Inténtalo de nuevo.");
+                // Si no es número, limpiar buffer y volver a preguntar
+                System.out.println("Entrada inválida. Por favor ingrese un número entre 2 y 4.");
+                SCANNER.nextLine(); // CRÍTICO: Limpiar buffer para evitar bucle infinito
             }
-            SCANNER.nextLine(); // Consumir el salto de línea
+
         }
         return count;
     }
@@ -121,9 +135,17 @@ public class Main {
                 ? "Acción (W/A/S/D para posicionar muro, F para cancelar): "
                 : "Acción (WASD para mover, F para muro, EXIT para salir): ";
 
+        //Luis estuvo aqui >:(
+        // Mostrar información del turno actual
+        java.awt.Point pos = currentPlayer.getCurrentPosition();
+        int visualCol = (pos.x/2)+1;
+        int visualRow = (pos.y/2)+ 1;
         System.out.println("\n*** Turno de " + currentPlayer.getName() + " (" + currentPlayer.getSymbol() + ") ***");
+        System.out.println("Posición actual: (" + visualCol + "," + visualRow + ") ");
         System.out.print(prompt);
 
+        //Luis estuvo Aqui >:(
+        // Leer y procesar comando del usuario
         if (SCANNER.hasNextLine()) {
             String line = SCANNER.nextLine().trim().toUpperCase();
 
@@ -136,7 +158,7 @@ public class Main {
                 System.exit(0);
             }
 
-            // Si es un comando de un solo carácter (W, A, S, D, F)
+            // Procesar comandos de un solo carácter (W, A, S, D, F)
             if (line.length() == 1) {
                 char input = line.charAt(0);
                 game.processInput(input);
@@ -202,7 +224,7 @@ public class Main {
                     if (mid == GameBoard.WALL_SOLID) {
                         System.out.print("│");
                     } else {
-                        System.out.print(" ");
+                        System.out.print(" "); // esta linea es sossspechosaaa mmmmm
                     }
                 } else {
                     System.out.print("│");

@@ -4,13 +4,14 @@ public enum Direction {
     LEFT('←'),
     RIGHT('→');
 
-
+    /*Almacena el caracter Unicode de cada direccion*/
     private final char symbol;
 
     Direction(char symbol) {
         this.symbol = symbol;
     }
 
+    /* Devuelve el simbolo de la Direccion */
     public char getSymbol() {
         return symbol;
     }

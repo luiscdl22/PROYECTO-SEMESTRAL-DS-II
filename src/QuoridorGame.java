@@ -9,10 +9,8 @@ public class QuoridorGame {
     private int currentPlayerIndex;
     private int turnCount;
     private boolean placementMode = false;
-
     // interno 17x17
     private final int boardSize = 17;
-
     private Player winner = null;
 
     public QuoridorGame(int playerCount, Scanner inputScanner, int nodeSize) {
@@ -43,8 +41,16 @@ public class QuoridorGame {
 
         for (int i = 0; i < count; i++) {
             System.out.print("Ingrese nombre para Jugador " + (i + 1) + " (símbolo " + symbols[i] + "): ");
+
+            //Luis estuvo Aqui >:(
             String name = inputScanner.nextLine();
-            if (name == null || name.trim().isEmpty()) name = "Jugador " + (i + 1);
+
+            //Si el nomre esta vacio usar el nombre por defecto
+            if (name == null || name.trim().isEmpty()) {
+                name = "Jugador " + (i + 1);
+                System.out.println("Nombre por defecto: " + name);
+            }
+
             Point p = startPositions[i];
             Player player = new Player(name, symbols[i], initialWalls, new Point(p.x, p.y), targetRows[i]);
             players.add(player);
@@ -103,6 +109,10 @@ public class QuoridorGame {
         }
     }
 
+    /**
+     * Intenta mover al jugador en la dirección especificada.
+     * No hay saltos, se aplica la regla de que ambos jugadores pueden ocupar la misma casilla.
+     */
     private boolean attemptMove(Player player, char input) {
         Point current = player.getCurrentPosition();
         Point next = new Point(current.x, current.y);
@@ -131,37 +141,47 @@ public class QuoridorGame {
 
         if (isValidMove(current, next, dir)) {
             player.setCurrentPosition(next);
-            return true;
+
+
+            //Luis estuvo aqui >:(
+            //feedback textual: mostrar las posiciones de los jugadores
+            int visualCol = (next.x /2) + 1;
+            int visualRow = (next.y/2) +1;
+            System.out.println("Jugador " + player.getName() + " esta en: (" + visualCol + "," + visualRow + ")"  );
+            return  true;
         }
         return false;
     }
 
+    /** Luis estuvo aqui >:(
+     * Valida si un movimiento es legal.
+     * Solo valida muros y límites del tablero.
+     * NO valida jugadores (pueden compartir casilla).
+     */
     private boolean isValidMove(Point current, Point next, Direction direction) {
+        // Validar límites del tablero
         if (next.x < 0 || next.x >= boardSize || next.y < 0 || next.y >= boardSize) {
             System.out.println("¡ERROR! Movimiento fuera de los límites del tablero.");
             return false;
         }
 
+        // Calcular posición del muro intermedio
         int wallY = current.y + (next.y - current.y) / 2;
         int wallX = current.x + (next.x - current.x) / 2;
 
+        // Validar que el muro intermedio esté dentro de límites
         if (wallY < 0 || wallY >= boardSize || wallX < 0 || wallX >= boardSize) {
             System.out.println("¡ERROR! Movimiento fuera de los límites del tablero.");
             return false;
         }
 
+        // Validar que NO haya un muro bloqueando el camino
         if (board.getGrid()[wallY][wallX] == GameBoard.WALL_SOLID) {
             System.out.println("¡ERROR! Muro bloqueando el camino.");
             return false;
         }
 
-        for (Player other : players) {
-            if (other != getCurrentPlayer() && other.getCurrentPosition().equals(next)) {
-                System.out.println("¡ERROR! Posición ocupada por otro jugador (saltos no implementados).");
-                return false;
-            }
-        }
-
+        // pueden compartir casilla
         return true;
     }
 
@@ -215,5 +235,45 @@ public class QuoridorGame {
         return false;
     }
 
+    /**Luis estuvo aqui >:(
+     * Muestra el resumen completo del juego al finalizar.
+     * Incluye posiciones iniciales, recorrido de cada jugador y resultado final.
+     */
+    public void showGameSummary() {
+        System.out.println("\n" + "=".repeat(60));
+        System.out.println("               RESUMEN DEL JUEGO");
+        System.out.println("=".repeat(60));
+
+
+
+        // Sección 1: Recorrido de cada jugador
+        System.out.println("\nRECORRIDO DE JUGADORES:");
+        System.out.println("-".repeat(60));
+        for (Player p : players) {
+            System.out.println("\n" + p.getSymbol() + " " + p.getName() + ":");
+            List<Point> history = p.getMovementHistory();
+            for (int i = 0; i < history.size(); i++) {
+                Point pos = history.get(i);
+                int visualCol = (pos.x / 2) + 1;
+                int visualRow = (pos.y / 2) + 1;
+                String label = (i == 0) ? "(Inicio)" : "";
+                System.out.println("    Movimiento " + i + ": Columna " + visualCol +
+                        ", Fila " + visualRow + " " + label);
+            }
+        }
+
+        // Sección 2: Resultado
+        System.out.println("\n" + "=".repeat(60));
+        System.out.println("RESULTADO:");
+        System.out.println("-".repeat(60));
+        if (winner != null) {
+            System.out.println("  ¡GANADOR: " + winner.getName() + " (" + winner.getSymbol() + ")!");
+        } else {
+            System.out.println("  PARTIDA INTERRUMPIDA");
+            System.out.println("  Último turno: " + getCurrentPlayer().getName() +
+                    " (" + getCurrentPlayer().getSymbol() + ")");
+        }
+        System.out.println("=".repeat(60) + "\n");
+    }
 
 }

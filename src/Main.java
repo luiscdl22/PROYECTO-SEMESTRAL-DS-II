@@ -74,7 +74,6 @@ public class Main {
         System.out.println(spaces + "Escribe 'EXIT' para salir en cualquier momento.");
         System.out.println(spaces + "\nPresiona ENTER para empezar...");
 
-        //Luis estuvo Aqui >:(
         // Leer ENTER del usuario y limpiar buffer de entrada
         try {
             System.in.read();
@@ -101,7 +100,7 @@ public class Main {
             } else {
                 // Si no es número, limpiar buffer y volver a preguntar
                 System.out.println("Entrada inválida. Por favor ingrese un número entre 2 y 4.");
-                SCANNER.nextLine(); // CRÍTICO: Limpiar buffer para evitar bucle infinito
+                SCANNER.nextLine(); //Limpiar buffer para evitar bucle infinito
             }
 
         }

@@ -235,7 +235,7 @@ public class QuoridorGame {
         return false;
     }
 
-    /**Luis estuvo aqui >:(
+    /** Luis estuvo aqui >:(
      * Muestra el resumen completo del juego al finalizar.
      * Incluye posiciones iniciales, recorrido de cada jugador y resultado final.
      */

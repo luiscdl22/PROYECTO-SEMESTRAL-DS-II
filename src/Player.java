@@ -10,8 +10,11 @@ public class Player {
     private int wallsRemaining;
     private final int targetRow; // objetivo en Y (para 2 jugadores)
 
-
-    /*Lista para guardar historial de movimientos*/
+    //Luis estuvo aqui >:(
+    /*Lista para guardar historial de movimientos
+    * solo la clase player puede acceder a esta variable
+    * final para que solo se inicialice una vez
+    * */
     private final List<Point> movementHistory;
 
 
@@ -35,8 +38,11 @@ public class Player {
         this.targetRow = targetRow;
 
 
-        /*Inicializar el historial con pocision inicial*/
+        /*Inicializar el historial con pocision inicial (en el constructor)*/
         this.movementHistory = new ArrayList <> ();
+        /* se accede a la lista del jugadora actual
+        * llamado al metodo add para agregar un nuevo elemento  en este caso X y Y)
+        * */
         this.movementHistory.add(new Point(startPos.x, startPos.y));
     }
 
@@ -67,10 +73,9 @@ public class Player {
     }
 
     public void setCurrentPosition(Point newPosition) {
+        //actualizar la posicion actual
         this.currentPosition = new Point(newPosition.x, newPosition.y);
-
-        /*Registrar Automaticamente el movimiento*/
-
+        //Registrar Automaticamente el movimiento
         this.movementHistory.add (new Point(newPosition.x, newPosition.y));
     }
 

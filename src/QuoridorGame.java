@@ -15,16 +15,17 @@ public class QuoridorGame {
 
     private Player winner = null;
 
-    public QuoridorGame(int playerCount, Scanner inputScanner, int nodeSize) {
+    public QuoridorGame(Scanner inputScanner, int nodeSize) {
         this.board = new GameBoard(this.boardSize);
         this.players = new ArrayList<>();
         this.currentPlayerIndex = 0;
         this.turnCount = 1;
-        initializePlayers(playerCount, inputScanner);
+        initializePlayers(inputScanner);
         board.updatePlayers(players);
     }
 
-    private void initializePlayers(int count, Scanner inputScanner) {
+    private void initializePlayers(Scanner inputScanner) {
+
         int nodeSize = 9;
         int center = nodeSize / 2; // 4
         int centerIndex = center * 2; // 8
@@ -38,10 +39,10 @@ public class QuoridorGame {
         };
 
         int[] targetRows = { 0, boardSize - 1, -1, -1 };
-        String[] symbols = { "①", "②", "③", "④" };
-        int initialWalls = (count == 2) ? 10 : 5;
+        String[] symbols = { "⭕", "⚪" };
+        int initialWalls = 10;
 
-        for (int i = 0; i < count; i++) {
+        for (int i = 0; i < 2; i++) {
             System.out.print("Ingrese nombre para Jugador " + (i + 1) + " (símbolo " + symbols[i] + "): ");
             String name = inputScanner.nextLine();
             if (name == null || name.trim().isEmpty()) name = "Jugador " + (i + 1);

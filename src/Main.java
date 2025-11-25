@@ -14,13 +14,11 @@ public class Main {
         // --- Fase 0: Menú de Inicio Centrado ---
         printTitleScreen();
 
-        // 1. Pedir número de jugadores
-        int playerCount = askPlayerCount();
+        // 1. Inicializar el juego y pedir nombres
+        game = new QuoridorGame(SCANNER, GAME_GRID_NODES);
 
-        // 2. Inicializar el juego y pedir nombres
-        game = new QuoridorGame(playerCount, SCANNER, GAME_GRID_NODES);
 
-        // 3. Simular animación de "movimiento"
+        // 2. Simular animación de "movimiento"
         try {
             simulateCenteringAnimation();
         } catch (InterruptedException e) {
@@ -76,20 +74,6 @@ public class Main {
         while (System.in.available() > 0) {
             System.in.read();
         }
-    }
-
-    private static int askPlayerCount() {
-        int count = 0;
-        while (count < 2 || count > 4) {
-            System.out.print("¿Cuántos jugadores (2-4)? ");
-            if (SCANNER.hasNextInt()) {
-                count = SCANNER.nextInt();
-            } else {
-                System.out.println("Entrada inválida. Inténtalo de nuevo.");
-            }
-            SCANNER.nextLine(); // Consumir el salto de línea
-        }
-        return count;
     }
 
     private static void simulateCenteringAnimation() throws InterruptedException {
